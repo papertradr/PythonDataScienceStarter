@@ -17,7 +17,7 @@ jobs:
     - name: Create Anaconda Env
       run: |
         make create_environment
-        conda activate $(basename $PWD)
+        $CONDA/bin/activate $(basename $PWD)
         make data
         make create_report
         make lint
