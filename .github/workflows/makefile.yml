@@ -18,10 +18,3 @@ jobs:
       run: |
         make create_environment
         $CONDA/bin/activate $(basename $PWD)
-
-    - name: Run Docker
-      run: |
-        make build_container
-        make run_container
-        make stop_container_all
-        make prune_container
