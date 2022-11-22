@@ -18,6 +18,8 @@ jobs:
     - name: Create and activate Conda Env
       run: |
         conda env update --file conda-env.txt --name base
+    - name: Install pip requirements
+      run: |
         pip3 install -r pip3-requirements.txt
     - name: Lint with flake8
       run: |
