@@ -1,4 +1,4 @@
-.PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3 build_container stop_container_all prune_container run_container run_container_gpu
+.PHONY: clean data install create_report lint requirements sync_data_to_s3 sync_data_from_s3 build_container stop_container_all prune_container run_container run_container_gpu
 
 #################################################################################
 # GLOBALS                                                                       #
