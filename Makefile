@@ -64,6 +64,41 @@ clean:
 lint:
 	flake8 src
 
+## Set up python interpreter environment
+create_environment:
+ifeq (True,$(HAS_CONDA))
+		@echo ">>> Detected conda, creating conda environment."
+ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
+	conda create --name $(PROJECT_NAME) --file conda-env.txt python=3.8
+else
+	conda create --name $(PROJECT_NAME) --file conda-env.txt python=2.7
+endif
+		#@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
+		@echo ">>> New conda env ${PROJECT_NAME} created. Installing conda and pip dependencies."
+		source ~/.bashrc
+		$(CONDA_ACTIVATE) ${PROJECT_NAME}
+		conda install --file conda-env.txt
+		pip3 install -r pip3-requirements.txt
+else
+	$(PYTHON_INTERPRETER) -m pip install -q virtualenv virtualenvwrapper
+	@echo ">>> Installing virtualenvwrapper if not already installed.\nMake sure the following lines are in shell startup file\n\
+	export WORKON_HOME=$$HOME/.virtualenvs\nexport PROJECT_HOME=$$HOME/Devel\nsource /usr/local/bin/virtualenvwrapper.sh\n"
+	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)"
+	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
+endif
+
+delete_environment:
+		@echo ">>> Deleting environment."
+	conda env remove -n ${PROJECT_NAME} 
+
+## Test python environment is setup correctly
+test_environment:
+	$(PYTHON_INTERPRETER) test_environment.py
+
+
+#################################################################################
+# AWS Commands                                                                  #
+#################################################################################
 ## Upload Data to S3
 sync_data_to_s3:
 ifeq (default,$(PROFILE))
@@ -99,37 +134,6 @@ else
 	
 	aws s3 sync s3://$(MODELBUCKET)/models models/ --profile $(PROFILE)
 endif
-
-## Set up python interpreter environment
-create_environment:
-ifeq (True,$(HAS_CONDA))
-		@echo ">>> Detected conda, creating conda environment."
-ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(PROJECT_NAME) --file conda-env.txt python=3.8
-else
-	conda create --name $(PROJECT_NAME) --file conda-env.txt python=2.7
-endif
-		#@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
-		@echo ">>> New conda env ${PROJECT_NAME} created. Installing conda and pip dependencies."
-		source ~/.bashrc
-		$(CONDA_ACTIVATE) ${PROJECT_NAME}
-		conda install --file conda-env.txt
-		pip3 install -r pip3-requirements.txt
-else
-	$(PYTHON_INTERPRETER) -m pip install -q virtualenv virtualenvwrapper
-	@echo ">>> Installing virtualenvwrapper if not already installed.\nMake sure the following lines are in shell startup file\n\
-	export WORKON_HOME=$$HOME/.virtualenvs\nexport PROJECT_HOME=$$HOME/Devel\nsource /usr/local/bin/virtualenvwrapper.sh\n"
-	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)"
-	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
-endif
-
-delete_environment:
-		@echo ">>> Deleting environment."
-	conda env remove -n ${PROJECT_NAME} 
-
-## Test python environment is setup correctly
-test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
 
 
 #################################################################################
