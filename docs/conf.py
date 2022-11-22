@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# datacruncher documentation build configuration file, created by
+# PythonDataScienceStarter documentation build configuration file, created by
 # sphinx-quickstart.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -41,7 +41,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'datacruncher'
+project = u'PythonDataScienceStarter'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'datacruncherdoc'
+htmlhelp_basename = 'PythonDataScienceStarterdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -184,8 +184,8 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     ('index',
-     'datacruncher.tex',
-     u'datacruncher Documentation',
+     'PythonDataScienceStarter.tex',
+     u'PythonDataScienceStarter Documentation',
      u"Jaewon Choi", 'manual'),
 ]
 
@@ -215,7 +215,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'datacruncher', u'datacruncher Documentation',
+    ('index', 'PythonDataScienceStarter', u'PythonDataScienceStarter Documentation',
      [u"Jaewon Choi"], 1)
 ]
 
@@ -229,8 +229,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'datacruncher', u'datacruncher Documentation',
-     u"Jaewon Choi", 'datacruncher',
+    ('index', 'PythonDataScienceStarter', u'PythonDataScienceStarter Documentation',
+     u"Jaewon Choi", 'PythonDataScienceStarter',
      'Crunches numerous data in python', 'Miscellaneous'),
 ]
 

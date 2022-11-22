@@ -1,6 +1,8 @@
 # Makefile for Sphinx documentation
 #
 
+PROJECT_NAME = $(shell basename $(CURDIR))
+
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
@@ -77,17 +79,17 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/datacruncher.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/$(PROJECT_NAME).qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/datacruncher.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/$(PROJECT_NAME).qhc"
 
 devhelp:
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/datacruncher"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/datacruncher"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/$(PROJECT_NAME)"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/$(PROJECT_NAME)"
 	@echo "# devhelp"
 
 epub:
