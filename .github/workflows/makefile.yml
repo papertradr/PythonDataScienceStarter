@@ -18,12 +18,6 @@ jobs:
       run: |
         make create_environment
         $CONDA/bin/activate $(basename $PWD)
-        make data
-        make create_report
-        make lint
-        make install
-        make update_dep
-        
 
     - name: Run Docker
       run: |
