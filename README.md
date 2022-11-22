@@ -1,6 +1,8 @@
 PythonDataScience Starter Template
 ==============================
 
+For more info, please check [here][1].
+
 Project Organization
 ------------
 
@@ -117,3 +119,5 @@ make update_dep
 ```
 make clean
 ```
+
+[1]: http://drivendata.github.io/cookiecutter-data-science/#cookiecutter-data-science
