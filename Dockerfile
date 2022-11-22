@@ -7,7 +7,9 @@ RUN apt-get update && \
     apt-get install -y lcov gcovr && \
     apt-get install -y zstd && \
     apt-get install -y libasan6 && \
-    apt-get install -y libcurl4-gnutls-dev
+    apt-get install -y libcurl4-gnutls-dev && \
+    apt-get install -y pandoc && \
+    apt-get install -y texlive-xetex
 
 
 # install tmux, vimrc

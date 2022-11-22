@@ -44,6 +44,11 @@ update_dep:
 data: requirements
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
 
+## Convert Jupyter Notebook report to HTML and PDF
+create_report:
+	jupyter nbconvert --execute --to html --output-dir='./reports/html' notebooks/reports/*.ipynb 
+	jupyter nbconvert --execute --to pdf --output-dir='./reports/pdf' notebooks/reports/*.ipynb 
+
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
