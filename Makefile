@@ -38,7 +38,11 @@ requirements: test_environment
 update_dep:
 	conda list --explicit > conda-env.txt
 	pip3 install --upgrade pip
-	pip3 list --format=freeze > pip3-requirements.txt
+	pip3 list --format=freeze --exclude src > pip3-requirements.txt
+
+## create and install src package
+install:
+	pip3 install -e .
 
 ## Make Dataset
 data: requirements
