@@ -1,0 +1,33 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create Anaconda Env
+      run: |
+        make create_environment
+        conda activate $(basename $PWD)
+        make data
+        make create_report
+        make lint
+        make install
+        make update_dep
+        
+
+    - name: Run Docker
+      run: |
+        make build_container
+        make run_container
+        make stop_container_all
+        make prune_container
