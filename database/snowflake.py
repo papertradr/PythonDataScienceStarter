@@ -37,9 +37,9 @@ class Snowflake:
         if warehouse is None:
             warehouse = "COMPUTE_WH"
         if user is None:
-            user = os.environ["QRAFT_ACCOUNT"]
+            user = os.environ.get["SF_USER"]
         if password is None:
-            password = os.environ["QRAFT_PASSWORD"]
+            password = os.environ.get["SF_PWD"]
         if database is None:
             database = ""
 
