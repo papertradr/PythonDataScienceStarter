@@ -5,7 +5,6 @@
 #################################################################################
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = BucketName
-MODELBUCKET = ModelBucketName
 PROFILE = default
 PROJECT_NAME := $(shell basename $(CURDIR))
 PROJECT_NAME_LC := $(shell echo $(PROJECT_NAME) | tr A-Z a-z)
@@ -108,14 +107,14 @@ ifeq (default,$(PROFILE))
 	aws s3 sync data/interim s3://$(BUCKET)/data/interim --delete
 	aws s3 sync data/external s3://$(BUCKET)/data/external --delete
 	
-	aws s3 sync models/ s3://$(MODELBUCKET)/models
+	aws s3 sync models/ s3://$(BUCKET)/models
 else
 	aws s3 sync data/raw s3://$(BUCKET)/data/raw --profile $(PROFILE)
 	aws s3 sync data/processed s3://$(BUCKET)/data/processed --profile $(PROFILE) --delete
 	aws s3 sync data/interim s3://$(BUCKET)/data/interim --profile $(PROFILE) --delete
 	aws s3 sync data/external s3://$(BUCKET)/data/external --profile $(PROFILE) --delete
 	
-	aws s3 sync models/ s3://$(MODELBUCKET)/models --profile $(PROFILE)
+	aws s3 sync models/ s3://$(BUCKET)/models --profile $(PROFILE)
 endif
 
 ## Download Data from S3
@@ -126,14 +125,14 @@ ifeq (default,$(PROFILE))
 	aws s3 sync s3://$(BUCKET)/data/interim data/interim --delete
 	aws s3 sync s3://$(BUCKET)/data/external data/external --delete
 
-	aws s3 sync s3://$(MODELBUCKET)/models models/
+	aws s3 sync s3://$(BUCKET)/models models/
 else
 	aws s3 sync s3://$(BUCKET)/data/raw data/raw --profile $(PROFILE)
 	aws s3 sync s3://$(BUCKET)/data/processed data/processed --profile $(PROFILE) --delete
 	aws s3 sync s3://$(BUCKET)/data/interim data/interim --profile $(PROFILE) --delete
 	aws s3 sync s3://$(BUCKET)/data/external data/external --profile $(PROFILE) --delete
 	
-	aws s3 sync s3://$(MODELBUCKET)/models models/ --profile $(PROFILE)
+	aws s3 sync s3://$(BUCKET)/models models/ --profile $(PROFILE)
 endif
 
 
