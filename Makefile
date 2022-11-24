@@ -38,6 +38,7 @@ requirements: test_environment
 update_dep:
 	conda list --explicit > conda-env.txt
 	conda env export > conda-env.yaml
+	conda update --all
 	pip3 install --upgrade pip
 	pip3 list --format=freeze --exclude src > pip3-requirements.txt
 
