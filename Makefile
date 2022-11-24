@@ -54,6 +54,7 @@ data: requirements
 create_report:
 	jupyter nbconvert --execute --to html --output-dir='./reports/html' notebooks/reports/*.ipynb 
 	jupyter nbconvert --execute --to pdf --output-dir='./reports/pdf' notebooks/reports/*.ipynb 
+	jupyter nbconvert --execute --to markdown --output-dir='./reports/md' notebooks/reports/*.ipynb 
 
 ## Delete all compiled Python files
 clean:
