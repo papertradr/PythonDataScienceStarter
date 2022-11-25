@@ -20,7 +20,6 @@ load_dotenv(dotenv_path)
 def fmt_exist_ok(exist_ok: bool):
     return "IF NOT EXISTS" if exist_ok else ""
 
-
 class Snowflake:
     account = os.environ.get("SF_ACCOUNT")
 
@@ -37,15 +36,14 @@ class Snowflake:
         if warehouse is None:
             warehouse = "COMPUTE_WH"
         if user is None:
-            user = os.environ.get["SF_USER"]
+            user = os.environ.get("SF_USER")
         if password is None:
-            password = os.environ.get["SF_PWD"]
+            password = os.environ.get("SF_PWD")
         if database is None:
-            database = ""
+            database = os.environ.get("SF_DATABASE")
 
-        self._engine = create_engine(
-            f"snowflake://{user}:{password}@{self.account}/{database}?role={role}&warehouse={warehouse}"
-        )
+        db_url = f"snowflake://{user}:{password}@{self.account}/{database}?role={role}&warehouse={warehouse}"
+        self._engine = create_engine(db_url)
         self._meta_data = sqlalchemy.MetaData(bind=self._engine)
 
     def connect(self):
@@ -199,4 +197,9 @@ class Snowflake:
     def execute(self, sql: str):
         with self.connect() as con:
             return con.execute(sql)
+
+if __name__ == "__main__":
+    sf = Snowflake()
+    sf.connect()
+
 
