@@ -17,8 +17,10 @@ dotenv_path = find_dotenv()
 # load up the entries as environment variables
 load_dotenv(dotenv_path)
 
+
 def fmt_exist_ok(exist_ok: bool):
     return "IF NOT EXISTS" if exist_ok else ""
+
 
 class Snowflake:
     account = os.environ.get("SF_ACCOUNT")
@@ -42,7 +44,8 @@ class Snowflake:
         if database is None:
             database = os.environ.get("SF_DATABASE")
 
-        db_url = f"snowflake://{user}:{password}@{self.account}/{database}?role={role}&warehouse={warehouse}"
+        db_url = f"snowflake://{user}:{password}@{self.account}/{database}?\
+            role={role}&warehouse={warehouse}"
         self._engine = create_engine(db_url)
         self._meta_data = sqlalchemy.MetaData(bind=self._engine)
 
@@ -57,7 +60,8 @@ class Snowflake:
         allow_public_usage: bool = False,
     ):
         with self.connect() as con:
-            res = con.execute(f"CREATE DATABASE {fmt_exist_ok(exist_ok)} {db_name}")
+            res = con.execute(
+                f"CREATE DATABASE {fmt_exist_ok(exist_ok)} {db_name}")
             if use:
                 con.execute(f"USE DATABASE {db_name}")
             if allow_public_usage:
@@ -72,7 +76,8 @@ class Snowflake:
         allow_public_usage: bool = False,
     ):
         with self.connect() as con:
-            res = con.execute(f"CREATE SCHEMA {fmt_exist_ok(exist_ok)} {schema_name}")
+            res = con.execute(
+                f"CREATE SCHEMA {fmt_exist_ok(exist_ok)} {schema_name}")
             if use:
                 con.execute(f"USE SCHEMA {schema_name}")
             if allow_public_usage:
@@ -89,11 +94,14 @@ class Snowflake:
         prefixes = []
         if temporary:
             prefixes.append("TEMPORARY")
-        table = sqlalchemy.Table(table_name, self._meta_data, *columns, prefixes=prefixes)
+        table = sqlalchemy.Table(
+            table_name, self._meta_data, *columns, prefixes=prefixes)
         self._meta_data.create_all()
         if allow_public_access:
             with self.connect() as con:
-                con.execute(f"GRANT SELECT,REFERENCES ON TABLE {table_name} TO ROLE public")
+                con.execute(
+                    f"GRANT SELECT,REFERENCES ON TABLE {table_name} \
+                    TO ROLE public")
         return table
 
     def create_stage(
@@ -108,7 +116,9 @@ class Snowflake:
             return con.execute(
                 f"""
                 CREATE stage {fmt_exist_ok(exist_ok)} {stage_name}
-                file_format = (type ='CSV' field_delimiter = '{sep}' field_optionally_enclosed_by='"' skip_header={skip_header} compression={compression});
+                file_format = (type ='CSV' field_delimiter = '{sep}' \
+                field_optionally_enclosed_by='"' skip_header={skip_header} \
+                compression={compression});
                 """
             ).fetchall()
 
@@ -120,7 +130,8 @@ class Snowflake:
     ):
         with self.connect() as con:
             return con.execute(
-                f"PUT 'file://{path.absolute().as_posix()}' '{stage_name}' overwrite={overwrite};"
+                f"PUT 'file://{path.absolute().as_posix()}' '{stage_name}' \
+                overwrite={overwrite};"
             ).fetchall()
 
     def drop_table(
@@ -150,7 +161,8 @@ class Snowflake:
             alias_cols.append(mapped)
         alias_cols = ", ".join(alias_cols)
 
-        match_cond = " AND ".join(f"target.{col} = source.{col}" for col in comp_cols)
+        match_cond = " AND ".join(
+            f"target.{col} = source.{col}" for col in comp_cols)
 
         query = f"""
         MERGE INTO {table.name} target
@@ -197,9 +209,3 @@ class Snowflake:
     def execute(self, sql: str):
         with self.connect() as con:
             return con.execute(sql)
-
-if __name__ == "__main__":
-    sf = Snowflake()
-    sf.connect()
-
-

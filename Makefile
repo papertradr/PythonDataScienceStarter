@@ -64,6 +64,7 @@ clean:
 ## Lint using flake8
 lint:
 	flake8 src
+	flake8 database
 
 ## Set up python interpreter environment
 create_environment:
