@@ -153,6 +153,7 @@ https://repo.anaconda.com/pkgs/main/linux-64/jedi-0.18.1-py38h06a4308_1.conda
 https://repo.anaconda.com/pkgs/main/linux-64/jinja2-3.1.2-py38h06a4308_0.conda
 https://repo.anaconda.com/pkgs/main/linux-64/jupyter_core-4.11.2-py38h06a4308_0.conda
 https://repo.anaconda.com/pkgs/main/noarch/jupyterlab_pygments-0.1.2-py_0.conda
+https://repo.anaconda.com/pkgs/main/linux-64/mako-1.2.3-py38h06a4308_0.conda
 https://repo.anaconda.com/pkgs/main/linux-64/matplotlib-inline-0.1.6-py38h06a4308_0.conda
 https://repo.anaconda.com/pkgs/main/linux-64/mkl-service-2.4.0-py38h7f8727e_0.conda
 https://repo.anaconda.com/pkgs/main/noarch/packaging-21.3-pyhd3eb1b0_0.conda
