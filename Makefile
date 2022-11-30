@@ -6,6 +6,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = BucketName
 PROFILE = default
+USERNAME = none
 PROJECT_NAME := $(shell basename $(CURDIR))
 PROJECT_NAME_LC := $(shell echo $(PROJECT_NAME) | tr A-Z a-z)
 PYTHON_INTERPRETER = python3
@@ -103,38 +104,38 @@ test_environment:
 #################################################################################
 ## Upload Data to S3
 sync_data_to_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync data/raw s3://$(BUCKET)/data/raw
-	aws s3 sync data/processed s3://$(BUCKET)/data/processed --delete
-	aws s3 sync data/interim s3://$(BUCKET)/data/interim --delete
-	aws s3 sync data/external s3://$(BUCKET)/data/external --delete
-	
-	aws s3 sync models/ s3://$(BUCKET)/models
+ifeq (none,$(USERNAME))
+		@echo ">>> Please specify username in Makefile to use s3 "
 else
-	aws s3 sync data/raw s3://$(BUCKET)/data/raw --profile $(PROFILE)
-	aws s3 sync data/processed s3://$(BUCKET)/data/processed --profile $(PROFILE) --delete
-	aws s3 sync data/interim s3://$(BUCKET)/data/interim --profile $(PROFILE) --delete
-	aws s3 sync data/external s3://$(BUCKET)/data/external --profile $(PROFILE) --delete
+ifeq (default,$(PROFILE))
+	aws s3 sync data/$(USERNAME) s3://$(BUCKET)/data/$(USERNAME) --delete
+	aws s3 sync data/shared s3://$(BUCKET)/data/shared 
 	
-	aws s3 sync models/ s3://$(BUCKET)/models --profile $(PROFILE)
+	aws s3 sync models/$(USERNAME) s3://$(BUCKET)/models/$(USERNAME) --delete
+	aws s3 sync models/shared s3://$(BUCKET)/models/shared
+else
+	aws s3 sync data/$(USERNAME) s3://$(BUCKET)/data/$(USERNAME) --profile $(PROFILE) --delete
+	aws s3 sync data/shared s3://$(BUCKET)/data/shared --profile $(PROFILE)
+	
+	aws s3 sync models/$(USERNAME) s3://$(BUCKET)/models/$(USERNAME) --profile $(PROFILE) --delete
+	aws s3 sync models/shared s3://$(BUCKET)/models/shared --profile $(PROFILE) 
+endif
 endif
 
 ## Download Data from S3
 sync_data_from_s3:
 ifeq (default,$(PROFILE))
-	aws s3 sync s3://$(BUCKET)/data/raw data/raw
-	aws s3 sync s3://$(BUCKET)/data/processed data/processed --delete
-	aws s3 sync s3://$(BUCKET)/data/interim data/interim --delete
-	aws s3 sync s3://$(BUCKET)/data/external data/external --delete
+	aws s3 sync s3://$(BUCKET)/data/$(USERNAME) data/$(USERNAME) --delete
+	aws s3 sync s3://$(BUCKET)/data/shared data/shared
 
-	aws s3 sync s3://$(BUCKET)/models models/
+	aws s3 sync s3://$(BUCKET)/models/$(USERNAME) models/$(USERNAME) --delete
+	aws s3 sync s3://$(BUCKET)/models/shared models/shared
 else
-	aws s3 sync s3://$(BUCKET)/data/raw data/raw --profile $(PROFILE)
-	aws s3 sync s3://$(BUCKET)/data/processed data/processed --profile $(PROFILE) --delete
-	aws s3 sync s3://$(BUCKET)/data/interim data/interim --profile $(PROFILE) --delete
-	aws s3 sync s3://$(BUCKET)/data/external data/external --profile $(PROFILE) --delete
+	aws s3 sync s3://$(BUCKET)/data/$(USERNAME) data/$(USERNAME) --profile $(PROFILE) --delete
+	aws s3 sync s3://$(BUCKET)/data/shared data/shared --profile $(PROFILE)
 	
-	aws s3 sync s3://$(BUCKET)/models models/ --profile $(PROFILE)
+	aws s3 sync s3://$(BUCKET)/models/$(USERNAME) models/$(USERNAME) --profile $(PROFILE) --delete
+	aws s3 sync s3://$(BUCKET)/models/shared models/shared --profile $(PROFILE)
 endif
 
 
