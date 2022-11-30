@@ -124,6 +124,9 @@ endif
 
 ## Download Data from S3
 sync_data_from_s3:
+ifeq (none,$(USERNAME))
+		@echo ">>> Please specify username in Makefile to use s3 "
+else
 ifeq (default,$(PROFILE))
 	aws s3 sync s3://$(BUCKET)/data/$(USERNAME) data/$(USERNAME) --delete
 	aws s3 sync s3://$(BUCKET)/data/shared data/shared
@@ -137,7 +140,7 @@ else
 	aws s3 sync s3://$(BUCKET)/models/$(USERNAME) models/$(USERNAME) --profile $(PROFILE) --delete
 	aws s3 sync s3://$(BUCKET)/models/shared models/shared --profile $(PROFILE)
 endif
-
+endif
 
 #################################################################################
 # Docker Commands                                                               #
